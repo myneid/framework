@@ -82,7 +82,11 @@ class Uri {
      */
     public function __construct() {
         $this->requestedPath = $_SERVER['REQUEST_URI'];
-        $this->rootPath = PUBLIC_PATH;
+        if(defined('PUBLIC_PATH')):
+            $this->rootPath = PUBLIC_PATH;
+        else:
+            $this->rootPath = $_SERVER["DOCUMENT_ROOT"];
+        endif;
     }
 
     /**
@@ -197,4 +201,5 @@ class Uri {
     }
 
 }
+
 
