@@ -100,9 +100,11 @@ class Bootstrap {
             if (method_exists($app, $method)):
                 call_user_func(array($app, $method));
             else:
-                if (DEVELOPMENT_ENVIRONMENT):
-                    throw new \ngfw\Exception(sprintf('The required method "%s" does not exist for %s', $method, $className));
-                    exit();
+                if(defined('DEVELOPMENT_ENVIRONMENT')):
+                    if (DEVELOPMENT_ENVIRONMENT):
+                        throw new \ngfw\Exception(sprintf('The required method "%s" does not exist for %s', $method, $className));
+                        exit();
+                    endif;
                 endif;
             endif;
         endif;

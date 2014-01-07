@@ -58,11 +58,11 @@ class View {
     protected $layout = true;
 
     /**
-     * $noRender
+     * $render
      * @access protected
      * @var boolean
      */
-    protected $noRender = false;
+    protected $render = true;
 
     /**
      * $layoutFile
@@ -84,23 +84,23 @@ class View {
     }
 
     /**
-     * setLayout()
+     * enableLayout()
      * Sets layout object
      * @access public
      * @param boolean $bool
      */
-    public function setLayout($bool = true) {
+    public function enableLayout($bool = true) {
         $this->layout = $bool;
     }
 
     /**
-     * setNoRender()
-     * Sets noRender object
+     * enableView()
+     * Sets render object
      * @access public
      * @param boolean $bool
      */
-    public function setNoRender($bool = false) {
-        $this->noRender = $bool;
+    public function enableView($bool = true) {
+        $this->render = $bool;
     }
 
     /**
@@ -133,14 +133,16 @@ class View {
     public function loadLayout() {
         if ($this->layout):
             try {
-                $layoutFile = ROOT . DS . APPDIR . DS . 'Layout' . DS . $this->layoutFile . '.phtml';
+                $layoutFile = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "Application" . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . $this->layoutFile . '.phtml';
                 if (!file_exists($layoutFile)):
                     throw new Exception($layoutFile);
                 endif;
                 include ($layoutFile);
             } catch (\ngfw\Exception $e) {
-                if (DEVELOPMENT_ENVIRONMENT):
-                    exit("Could not find view file: " . $e->getMessage());
+                if(defined('DEVELOPMENT_ENVIRONMENT')):
+                    if (DEVELOPMENT_ENVIRONMENT):
+                        exit("Could not find view file: " . $e->getMessage());
+                    endif;
                 endif;
             }
         else:
@@ -155,16 +157,18 @@ class View {
      * @throws Exception
      */
     public function render() {
-        if (!$this->noRender):
+        if ($this->render):
             try {
-                $viewFile = ROOT . DS . APPDIR . DS . 'View' . DS . $this->controller . DS . ucfirst(strtolower($this->action)) . '.phtml';
+                $viewFile = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "Application" . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . $this->controller . DIRECTORY_SEPARATOR . ucfirst(strtolower($this->action)) . '.phtml';
                 if (!file_exists($viewFile)):
                     throw new Exception($viewFile);
                 endif;
                 include ($viewFile);
             } catch (Exception $e) {
-                if (DEVELOPMENT_ENVIRONMENT):
-                    exit("Could not find view file: " . $e->getMessage());
+                if(defined('DEVELOPMENT_ENVIRONMENT')):
+                    if (DEVELOPMENT_ENVIRONMENT):
+                        exit("Could not find view file: " . $e->getMessage());
+                    endif;
                 endif;
             }
         endif;

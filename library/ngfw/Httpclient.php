@@ -179,13 +179,13 @@ class Httpclient {
      * @return void
      */
     private function setupCookie() {
-        if (!is_dir(ROOT . DS . "TMP" . DS . "COOKIES")):
-            if (!is_dir(ROOT . DS . "TMP")):
-                @mkdir(ROOT . DS . "TMP", 0777);
+        if (!is_dir($_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "TMP" . DIRECTORY_SEPARATOR . "COOKIES")):
+            if (!is_dir($_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "TMP")):
+                @mkdir($_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "TMP", 0777);
             endif;
-            @mkdir(ROOT . DS . "TMP" . DS . "COOKIES", 0777);
+            @mkdir($_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "TMP" . DIRECTORY_SEPARATOR . "COOKIES", 0777);
         endif;
-        $this->cookie = tempnam(ROOT . DS . "TMP" . DS . "COOKIES", "CURLCOOKIE");
+        $this->cookie = tempnam($_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "TMP" . DIRECTORY_SEPARATOR . "COOKIES", "CURLCOOKIE");
     }
 
     /**

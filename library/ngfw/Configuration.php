@@ -44,7 +44,6 @@ class Configuration {
      */
     public static function loadConfigFile($filename) {
         if (!isset($filename) or !is_string($filename)):
-            require_once(ROOT . DS . 'library' . DS . 'Exception.php');
             throw new \ngfw\Exception("Filename is Required For Configuration");
         endif;
         $ini = parse_ini_file($filename);
