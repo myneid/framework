@@ -372,7 +372,7 @@ class Pagination {
     private function determineAutoIncrement() {
         if (!$this->orderByField):
             $query = "DESCRIBE " . $this->table;
-            $result = $this->db->run($query);
+            $result = $this->db->query($query);
             foreach ($result as $row):
                 if ($row['Extra'] == 'auto_increment'):
                     $this->orderByField = $row['Field'];
