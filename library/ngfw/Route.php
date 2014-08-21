@@ -264,14 +264,27 @@ class Route {
      */
     public static function getRequests() {
         self::determineRoute();
-        if (!self::init()->request):
-            $path = \ngfw\Uri::init()->getPathArray();
-            if (is_array($path) and !empty($path)):
-                foreach (array_slice($path, 1) as $key => $value):
-                    self::init()->setRequest($key, $value);
-                endforeach;
-            endif;
-        endif;
+        if (!self::init()->request)
+	{
+		$uri = new \ngfw\Uri();
+            //$path = \ngfw\Uri::init()->getPathArray();
+		$path = $uri->getPathArray();
+            if (is_array($path) and !empty($path))
+	    {
+		    foreach (array_slice($path, 1) as $key => $value)
+		    {
+			    self::init()->setRequest($key, $value);
+		    }
+	    }
+	    if(is_array($uri->getQueryString()))
+	    {
+		    foreach($uri->getQueryString() as $key=> $value)
+		    {
+			    self::init()->setRequest($key, $value);
+		    }
+	    }
+
+	}
         return self::init()->request;
     }
 
