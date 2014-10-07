@@ -263,29 +263,32 @@ class Route {
      * @return array
      */
     public static function getRequests() {
-        self::determineRoute();
-        if (!self::init()->request)
-	{
-		$uri = new \ngfw\Uri();
-            //$path = \ngfw\Uri::init()->getPathArray();
-		$path = $uri->getPathArray();
-            if (is_array($path) and !empty($path))
+	    self::determineRoute();
+	    $uri = new \ngfw\Uri();
+	    if (!self::init()->request)
 	    {
-		    foreach (array_slice($path, 1) as $key => $value)
+		    //$path = \ngfw\Uri::init()->getPathArray();
+		    $path = $uri->getPathArray();
+		    if (is_array($path) and !empty($path))
 		    {
-			    self::init()->setRequest($key, $value);
+			    foreach (array_slice($path, 1) as $key => $value)
+			    {
+				    self::init()->setRequest($key, $value);
+			    }
 		    }
+
 	    }
 	    if(is_array($uri->getQueryString()))
 	    {
+		    $tmp = self::init()->request;
 		    foreach($uri->getQueryString() as $key=> $value)
 		    {
-			    self::init()->setRequest($key, $value);
+			    //dont overwrite request vars with query string
+			    if(!$tmp[$key])
+				    self::init()->setRequest($key, $value);
 		    }
 	    }
-
-	}
-        return self::init()->request;
+	    return self::init()->request;
     }
 
     /**
