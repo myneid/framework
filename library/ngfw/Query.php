@@ -320,7 +320,7 @@ class Query {
     public function leftJoin($table, $clause, $value = null) {
         $k = (count($this->leftJoin) > 0) ? count($this->leftJoin) + 1 : 0;
         $this->leftJoin[$k]['table'] = $this->escapeField($table);
-        $this->leftJoin[$k]['clause'] = str_replace("?", "'" . addslashes($clause) . "'", $clause);
+        $this->leftJoin[$k]['clause'] = str_replace("?", "'" . addslashes($value) . "'", $clause);
         $this->query.="LEFT JOIN " . $this->leftJoin[$k]['table'] . " ON " . $this->leftJoin[$k]['clause'] . " ";
         return $this;
     }
@@ -337,7 +337,7 @@ class Query {
     public function rightJoin($table, $clause, $value = null) {
         $k = (count($this->leftJoin) > 0) ? count($this->leftJoin) + 1 : 0;
         $this->rightJoin[$k]['table'] = $this->escapeField($table);
-        $this->rightJoin[$k]['clause'] = str_replace("?", "'" . addslashes($clause) . "'", $clause);;
+        $this->rightJoin[$k]['clause'] = str_replace("?", "'" . addslashes($value) . "'", $clause);;
         $this->query.="RIGHT JOIN " . $this->rightJoin[$k]['table'] . " ON " . $this->rightJoin[$k]['clause'] . " ";
         return $this;
     }
