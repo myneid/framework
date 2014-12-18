@@ -37,7 +37,7 @@ class Database extends \PDO {
      * Default CHARSET
      */
 
-    const CHARSET = 'UTF8';
+    const CHARSET = 'UTF-8';
 
     /**
      * $options
@@ -131,13 +131,14 @@ class Database extends \PDO {
      * run()
      * Executes Query 
      * @param string $sql
+     * @param array $data
      * @access public
      * @return array|int|boolean
      */
-    public function query($sql) {
+    public function query($sql, $data=null) {
         try {
             $pdostmt = $this->prepare($sql);
-            if ($pdostmt->execute() !== false):
+            if ($pdostmt->execute($data) !== false):
                 if (preg_match("/^(" . implode("|", array("SELECT", "DESCRIBE", "PRAGMA", "SHOW", "DESCRIBE")) . ") /i", $sql)):
                     return $pdostmt->fetchAll(\PDO::FETCH_ASSOC);
                 elseif (preg_match("/^(" . implode("|", array("DELETE", "INSERT", "UPDATE")) . ") /i", $sql)):
