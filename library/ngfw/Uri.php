@@ -92,7 +92,7 @@ class Uri {
     public function __construct() {
         $this->requestedPath = $_SERVER['REQUEST_URI'];
 	$this->requestedPath = (strstr($this->requestedPath, '?') ? substr($this->requestedPath, 0, strpos($this->requestedPath, '?')) : $this->requestedPath);
-	$this->query_string = $_GET;
+	$this->query_string = $_REQUEST;
         if(defined('PUBLIC_PATH')):
             $this->rootPath = PUBLIC_PATH;
         else:
