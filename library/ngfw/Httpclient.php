@@ -84,6 +84,12 @@ class Httpclient {
     protected $postDataArray;
 
     /**
+     * $requestHeadersArray
+     * stores requests headers used in CURLOPT_HTTPHEADER
+     */
+    protected $requestHeadersArray = array();
+
+    /**
      * __construct()
      * Sets $uri, $maxredirects and $timeout objects if passed
      * @access public
@@ -115,6 +121,15 @@ class Httpclient {
     public function setUserAgent($userAgent) {
         $this->userAgent = $userAgent;
         return $this;
+    }
+
+    /**
+     * addRequestHeader
+     * Adds a header to the request
+     * header_str is a fully qualified header, like "Content-type: text/plain"
+     */
+    public function addRequestHeader($header_str) {
+      $this->requestHeadersArray[] = $header_str;
     }
 
     /**
@@ -217,6 +232,9 @@ class Httpclient {
             curl_setopt($ch, CURLOPT_POST, count($this->postDataArray));
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postData);
         endif;
+        if(count($this->requestHeadersArray) > 0 ) {
+               curl_setopt($ch, CURLOPT_HTTPHEADER, $this->requestHeadersArray);
+        }
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_ENCODING, "");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
