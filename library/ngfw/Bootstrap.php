@@ -60,7 +60,14 @@ class Bootstrap {
      * @return void
      */
     private function initMethods() {
-        foreach (get_class_methods($this) as $method):
+        // Get all class methods with _ in the beginning, sort alphabetically and then invoke all the methods.
+        $methods = get_class_methods($this);
+        // Methods must be sorted by name in a hackish attempt to make it deterministic.
+        // get_class_methods makes no assurances about the order methods are returned. http://php.net/manual/en/function.get-class-methods.php
+        // Before adding the sort, PHP was calling _initStorage after _NewControllerLoader in the following example:
+        // array ( 0 => '_initConfig', 1 => '_initRoute', 2 => '_initDB', 3 => '_initTrafficDB', 4 => '_initDbobject', 5 => '_NewControllerLoader', 6 => '__construct', 7 => 'initMethods', 8 => '_initStorage', 9 => '_loadController', )
+        sort($methods);
+        foreach ($methods as $method):
             if (substr($method, 0, 1) == "_" and substr($method, 0, 2) !== "__"):
                 call_user_func(array($this, $method));
             endif;
